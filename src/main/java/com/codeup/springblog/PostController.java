@@ -1,36 +1,33 @@
 package com.codeup.springblog;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PostController {
 
-    @RequestMapping(path = "/posts", method = RequestMethod.GET)
+    @GetMapping("/posts")
     @ResponseBody
     public String viewIndexPage(){
-        return "This is the post index page";
+        return "Here are all the posts.";
     }
 
-    @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
+    @GetMapping("/posts/{id}")
     @ResponseBody
-    public String viewIndividualPost(){
+    public String viewIndividualPost(@PathVariable long id){
         return "This is an individual blog post.";
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
+    @GetMapping("/posts/create")
     @ResponseBody
-    public String viewFormForCreatePost(){
-        return "View the form for creating a post.";
+    public String create(){
+        return "Get the form for creating a post.";
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
+    @PostMapping("/posts/create")
     @ResponseBody
-    public String createNewPost(){
-        return "Create a blog post.";
+    public String insert(){
+        return "Post the created blog post.";
     }
-
 
 }
