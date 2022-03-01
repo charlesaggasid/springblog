@@ -2,12 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<title>Individual Post</title>
 </head>
 <body>
 
 <h2 th:text="${individualPost.title}"></h2>
 <p th:text="${individualPost.body}"></p>
+<p th:text="${individualPost.user.email}">email</p>
 
 </body>
 </html>

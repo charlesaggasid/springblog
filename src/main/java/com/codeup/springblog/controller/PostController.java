@@ -1,7 +1,9 @@
 package com.codeup.springblog.controller;
 
 import com.codeup.springblog.models.Post;
+import com.codeup.springblog.models.User;
 import com.codeup.springblog.repositories.PostRepository;
+import com.codeup.springblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +15,12 @@ import java.util.List;
 public class PostController {
 
     private final PostRepository postsDao;
-    public PostController(PostRepository postsDao){
+    private final UserRepository userDao;
+
+    public PostController(PostRepository postsDao,
+                          UserRepository userDao){
         this.postsDao = postsDao;
+        this.userDao = userDao;
     }
 
     @GetMapping("/posts")
@@ -32,9 +38,10 @@ public class PostController {
     }
 
     @GetMapping ("/posts/{id}")
-    public String viewIndividualPost(@PathVariable int id, Model model){
-        Post indivPost = new Post(id, "First Individual Post", "Hope this shows up. My IntelliJ is running so slow.");
-        model.addAttribute("individualPost",indivPost);
+    public String viewIndividualPost(@PathVariable long id, Model model) {
+        Post individualPost = postsDao.getById(id);
+        model.addAttribute("postId", id);
+        model.addAttribute("individualPost",individualPost);
         return "posts/show";
     }
 
@@ -44,8 +51,11 @@ public class PostController {
     }
 
     @PostMapping("/posts/create")
-    public String createNewPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body){
+    public String createNewPost(@RequestParam(name = "title") String title,
+                                @RequestParam(name = "body") String body) {
         Post newPost = new Post (title, body);
+        User user = userDao.getById(1L);
+        newPost.setUser(user);
         postsDao.save(newPost);
         return "redirect:/posts";
     }
@@ -59,8 +69,8 @@ public class PostController {
 
     @PostMapping("/posts/{id}/edit")
     public String submitEdit(@RequestParam(name = "title") String title,
-                            @RequestParam(name = "body") String body,
-                            @PathVariable long id) {
+                             @RequestParam(name = "body") String body,
+                             @PathVariable long id) {
     Post postToEdit = postsDao.getById(id);
     postToEdit.setTitle(title);
     postToEdit.setBody(body);
