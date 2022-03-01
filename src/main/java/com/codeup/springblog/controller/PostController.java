@@ -46,34 +46,30 @@ public class PostController {
     }
 
     @GetMapping( "/posts/create")
-    public String viewFormForCreatePost(){
+    public String viewFormForCreatePost(Model model){
+        model.addAttribute("post", new Post());
         return "/posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String createNewPost(@RequestParam(name = "title") String title,
-                                @RequestParam(name = "body") String body) {
-        Post newPost = new Post (title, body);
+    public String createNewPost(@ModelAttribute Post post) {
         User user = userDao.getById(1L);
-        newPost.setUser(user);
-        postsDao.save(newPost);
+        post.setUser(user);
+        postsDao.save(post);
         return "redirect:/posts";
     }
 
     @GetMapping ("posts/{id}/edit")
     public String editForm(@PathVariable long id, Model model) {
-        Post postToEdit = postsDao.getById(id);
-        model.addAttribute("postToEdit", postToEdit);
+        model.addAttribute("post", postsDao.getById(id));
         return "posts/edit";
     }
 
     @PostMapping("/posts/{id}/edit")
-    public String submitEdit(@RequestParam(name = "title") String title,
-                             @RequestParam(name = "body") String body,
-                             @PathVariable long id) {
-    Post postToEdit = postsDao.getById(id);
-    postToEdit.setTitle(title);
-    postToEdit.setBody(body);
+    public String submitEdit(@ModelAttribute Post post) {
+    Post postToEdit = postsDao.getById(post.getId());
+    postToEdit.setTitle(post.getTitle());
+    postToEdit.setBody(post.getBody());
     postsDao.save(postToEdit);
     return "redirect:/posts";
     }
@@ -83,5 +79,4 @@ public class PostController {
         postsDao.deleteById(id);
         return "redirect:/posts";
     }
-
 }
