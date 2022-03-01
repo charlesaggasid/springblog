@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Deleted</title>
+	<th:block th:include="partials/bootstrap :: styling" ></th:block>
+</head>
+<body>
+<nav th:replace="partials/navbar :: navbar" />
+<h2>Post number <span th:text="${delete.getId()}"></span> has been deleted!</h2>
+
+<th:block th:include="partials/bootstrap :: scripts"></th:block>
+</body>
+</html>
