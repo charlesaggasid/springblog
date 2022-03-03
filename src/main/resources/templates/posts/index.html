@@ -13,7 +13,7 @@
 		<h3 class="card-title" th:text="${post.title}">Card title</h3>
 		<p class="card-text" th:text="${post.body}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 		<a class="btn btn-primary" th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit Post</a>
-		<form th:action="@{'/posts/delete' + '/' + ${post.id}}" th:method="POST">
+		<form th:action="@{'/posts/' + ${post.id} + 'delete' }" th:method="POST">
 			<button>Delete Post</button>
 		</form>
 	</div>
